@@ -49,7 +49,10 @@ def count_collocations_tri(collocations, first_word, second_word, third_word):
 
         else:
             collocations[first_word][second_word][third_word] +=1
-
+            
+            print collocations[first_word]
+            print collocations[first_word][second_word]
+            print collocations[first_word][second_word][third_word]
 def sort_collocations_tri(collocations):
     collocations_list = []
     for first_word in collocations.keys():
@@ -66,7 +69,7 @@ def sort_collocations_tri(collocations):
 def find_collocations_tri(filename):
     text_file = open(filename, 'r')
 
-    most_common_words = find_most_common_words(text_file, 20)
+    most_common_words = find_most_common_words(text_file, 100)
 
     second_word = None
     third_word = None
