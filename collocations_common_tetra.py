@@ -8,10 +8,19 @@ def sort_collocations_tetra(collocations):
                     collocations_list.append((first_word, second_word, third_word, fourth_word, collocations[first_word][second_word][third_word][fourth_word]))
     collocations_list = sorted(collocations_list, key=lambda collocation: collocation[4], reverse=True)
     return collocations_list
-    
+
+
 def print_collocations_tetra(collocations, number):
     for c in collocations[:number]:
         print c[0], c[1], c[2], c[3], c[4]
+
+
+def print_collocations_for_test_area_tetra(collocations, number):
+    text = ''
+    for c in collocations[:number]:
+        text += '{0} {1} {2} {3} {4}\n'.format(c[0], c[1], c[2], c[3], c[4])
+    return text
+
 
 def count_collocations_tetra(collocations, first_word, second_word, third_word, fourth_word):
     if first_word and second_word and third_word and fourth_word and first_word not in ['-'] and second_word not in ['-'] and third_word not in ['-'] and fourth_word not in ['-']:
@@ -29,6 +38,7 @@ def count_collocations_tetra(collocations, first_word, second_word, third_word, 
 
         else:
             collocations[first_word][second_word][third_word][fourth_word] +=1
+
 
 def trim_word(word):
     if not word:

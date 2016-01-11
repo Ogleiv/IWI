@@ -1,4 +1,4 @@
-from collocations_common import count_collocations, trim_word
+from collocations_common import count_collocations, trim_word, get_collocatios_from_string_2
 from stemming.porter2 import stem
 import wikipedia
 
@@ -15,9 +15,9 @@ def find_most_common_words(text, count):
     return sorted_words[:count]
 
 
-def find_collocations(text, data):
+def find_collocations(text, data, popular_word):
 
-    most_common_words = find_most_common_words(text, 10)
+    most_common_words = find_most_common_words(text, popular_word)
 
     second_word = None
     third_word = None
@@ -35,7 +35,17 @@ def find_collocations(text, data):
     first_word = second_word
     second_word = third_word
     count_collocations(collocations, first_word, second_word)
-    return collocations
+    return collocations, most_common_words
+
+
+def get_article_from_wikipedia(title):
+    wiki = wikipedia.page(title)
+    return wiki.content
+
+
+def single_article(title):
+    wiki = wikipedia.page(title)
+    return find_collocations(wiki.content, dict())
 
 
 def find(file_name, data=None):

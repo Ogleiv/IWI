@@ -3,7 +3,6 @@ from stemming.porter2 import stem
 import wikipedia
 
 
-
 def find_most_common_words(text, count):
     words = dict()
     for word in text.split():
@@ -15,16 +14,15 @@ def find_most_common_words(text, count):
     sorted_words = sorted(words, key=words.get, reverse=True)
     return sorted_words[:count]
 
-def find_collocations_tri(text, data):
+
+def find_collocations_tri(text, data, popular_word):
     
-    most_common_words = find_most_common_words(text, 30)
+    most_common_words = find_most_common_words(text, popular_word)
 
     second_word = None
     third_word = None
     fourth_word = None
     collocations = data
-
-    
     
     for word in text.split():
         first_word = second_word
@@ -35,12 +33,13 @@ def find_collocations_tri(text, data):
                 (first_word and first_word[0].islower() and second_word and second_word[0].islower() and third_word and third_word[0].islower()):
             count_collocations_tri(collocations, stem(first_word.lower()), stem(second_word.lower()), stem(third_word.lower()))
 
-     #dodatkowa iteracja dla ostatniego slowa
+    #dodatkowa iteracja dla ostatniego slowa
     first_word = second_word
     second_word = third_word
     third_word = fourth_word                                   
     count_collocations_tri(collocations, first_word, second_word, third_word)
-    return collocations
+    return collocations, most_common_words
+
 
 def find(file_name, data=None):
     if data:

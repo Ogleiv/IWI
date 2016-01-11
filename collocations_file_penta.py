@@ -1,10 +1,12 @@
 from collocations_common_penta import count_collocations_penta, trim_word
 from stemming.porter2 import stem
 
-def find_collocations_penta(file_name, data):
-    text_file = open(file_name, 'r')
 
-    most_common_words = find_most_common_words(text_file, 30)
+def find_collocations_penta(file_name, data, popular_word):
+    text_file = open(file_name, 'r')
+    file_content = text_file.read()
+
+    most_common_words = find_most_common_words(text_file, popular_word)
 
     second_word = None
     third_word = None
@@ -33,7 +35,8 @@ def find_collocations_penta(file_name, data):
     fourth_word = fifth_word
     fifth_word = sixth_word
     count_collocations_penta(collocations, first_word, second_word, third_word, fourth_word, fifth_word)
-    return collocations
+    return collocations, most_common_words, file_content
+
 
 def find_most_common_words(text_file, count):
     words = dict()
@@ -46,6 +49,7 @@ def find_most_common_words(text_file, count):
                 words[word] += 1
     sorted_words = sorted(words, key=words.get, reverse=True)
     return sorted_words[:count]
+
 
 def find(file_name, data=None):
     if data:

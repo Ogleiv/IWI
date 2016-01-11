@@ -2,10 +2,11 @@ from collocations_common import count_collocations, trim_word
 from stemming.porter2 import stem
 
 
-def find_collocations(file_name, data):
+def find_collocations(file_name, data, popular_word):
     text_file = open(file_name, 'r')
+    file_content = text_file.read()
 
-    most_common_words = find_most_common_words(text_file, 10)
+    most_common_words = find_most_common_words(text_file, popular_word)
 
     second_word = None
     third_word = None
@@ -25,7 +26,7 @@ def find_collocations(file_name, data):
     first_word = second_word
     second_word = third_word
     count_collocations(collocations, first_word, second_word)
-    return collocations
+    return collocations, most_common_words, file_content
 
 
 def find_most_common_words(text_file, count):
