@@ -103,7 +103,8 @@ class Main(tk.Tk):
 
         self.results.insert(END, text)
         self.article_textarea.insert(END, article_text)
-        
+        self.set_words_colors(most_common_words, collocations)
+
 
     def file_read(self):
         self.results.delete('1.0', END)
@@ -131,6 +132,23 @@ class Main(tk.Tk):
         self.results.insert(END, text)
         self.article_textarea.insert(END, file_text)
 
+    def set_words_colors(self, common_word, collocation):
+        self.article_textarea.tag_configure("common", background="#ff0000")
+
+        for word in common_word:
+            cur = 1.0
+            while True:
+                length = IntVar()
+                cur = self.article_textarea.search(word, cur, END, count=length)
+                if not cur:
+                    break
+
+                end = '{0}+{1}c'.format(cur, length.get())
+                prev = '{0}-{1}c'.format(cur, 1)
+                ne = '{0}+{1}c'.format(end, 1)
+                if self.article_textarea.get(prev, cur) in ['.', ',', '\'', '\"', '-', ' '] and self.article_textarea.get(end, ne) in ['.', ',', '\'', '\"', '-', ' ']:
+                    self.article_textarea.tag_add('common', cur, end)
+                cur = self.article_textarea.index(end)
 
 app = Main()
 app.mainloop()
