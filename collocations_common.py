@@ -55,7 +55,6 @@ def trim_word(word):
 
 
 def get_collocatios_from_string_2(text, data):
-
     most_common_words = find_most_common_words(text, 10)
 
     second_word = None
@@ -89,3 +88,31 @@ def find_most_common_words(text_file, count):
                 words[word] += 1
     sorted_words = sorted(words, key=words.get, reverse=True)
     return sorted_words[:count]
+
+
+def find_whole_collocations_from_stems(collocations, text):
+    words = dict()
+    for word in text.split():
+        word = trim_word(word)
+        if word not in words.keys():
+            words[word] = 1
+        else:
+            words[word] += 1
+    sorted_words = sorted(words, key=words.get, reverse=True)
+
+    new_collocations = dict()
+    for first_word in collocations.keys():
+        new_first_word = first_word
+        for word in sorted_words:
+            if word and word.startswith(first_word):
+                new_first_word = word
+                new_collocations[word] = dict()
+                break
+
+        for second_word in collocations[first_word].keys():
+            for word in sorted_words:
+                if word and word.startswith(second_word) and new_first_word in new_collocations.keys():
+                    new_collocations[new_first_word][word] = collocations[first_word][second_word]
+                    break
+
+    return new_collocations

@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-Ala ma kota. Ala nie ma  ..psa.
-=======
 Ala ma kota. Ala nie ma  ..psa.
 Ela ma psa. Ela nie ma kota.
 Pies ma kota, ale kot nie ma psa.
->>>>>>> f0650e24828c1ee3d7f2beb732b606c9bd841f13

@@ -1,4 +1,4 @@
-from collocations_common import count_collocations, trim_word
+from collocations_common import count_collocations, trim_word, find_whole_collocations_from_stems
 from stemming.porter2 import stem
 
 
@@ -26,6 +26,8 @@ def find_collocations(file_name, data, popular_word):
     first_word = second_word
     second_word = third_word
     count_collocations(collocations, first_word, second_word)
+
+    collocations = find_whole_collocations_from_stems(collocations, text)
     return collocations, most_common_words, file_content
 
 
