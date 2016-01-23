@@ -12,6 +12,7 @@ from Tkinter import *
 import Tkinter as tk
 import ttk
 from tkFileDialog import askopenfilename
+from random import randint
 
 
 class Main(tk.Tk):
@@ -41,7 +42,12 @@ class Main(tk.Tk):
         self.words_options = OptionMenu(self.global_option_frame, self.collocation_words, '2', '3', '4', '5')
 
         self.ignore_label = tk.Label(self.global_option_frame, text='Popular words to ignore:')
-        self.ignore_entry = tk.Entry(self.global_option_frame, text='10')
+        self.ignore_entry = tk.Entry(self.global_option_frame)
+        self.ignore_entry.insert(0, '10')
+
+        self.min_label = tk.Label(self.global_option_frame, text='Min text length (wiki):')
+        self.min_entry = tk.Entry(self.global_option_frame)
+        self.min_entry.insert(0, '50000')
 
         self.global_option_frame.pack(padx=1, pady=1, side=TOP, fill=X)
         self.wikipedia_frame.pack(padx=1, pady=1, side=TOP, fill=X)
@@ -56,6 +62,8 @@ class Main(tk.Tk):
         self.words_options.pack(padx=1, pady=0, fill=X)
         self.ignore_label.pack(padx=1, pady=0)
         self.ignore_entry.pack(padx=1, pady=0, fill=X)
+        self.min_label.pack(padx=1, pady=0, fill=X)
+        self.min_entry.pack(padx=1, pady=0, fill=X)
 
         self.n = ttk.Notebook(self.notebook_frame)
 
@@ -82,7 +90,30 @@ class Main(tk.Tk):
         self.results.delete('1.0', END)
         self.article_textarea.delete('1.0', END)
         popular_words = int(self.ignore_entry.get())
-        article_text = collocations_wikipedia.get_article_from_wikipedia(self.entry1.get())
+        flag, article = collocations_wikipedia.get_article_from_wikipedia(self.entry1.get())
+
+        if not flag:
+            self.results.insert(END, 'Could not get the atricle, because:\n')
+            self.results.insert(END, article)
+            return
+
+        article_text = article.content
+        links = article.links
+
+        while len(article_text) < int(self.min_entry.get()):
+            n = randint(0, len(links)-1)
+            link = links[n]
+            del links[n]
+
+            flag, new_article = collocations_wikipedia.get_article_from_wikipedia(link)
+            if flag:
+                links += new_article.links
+                article_text += ' ' + new_article.content
+
+            if not len(links):
+                break
+
+        self.results.delete('1.0', END)
 
         if self.collocation_words.get() == '2':
             collocations, most_common_words = collocations_wikipedia.find_collocations(article_text, dict(), popular_words)
@@ -104,7 +135,6 @@ class Main(tk.Tk):
         self.results.insert(END, text)
         self.article_textarea.insert(END, article_text)
         self.set_words_colors(most_common_words, collocations)
-
 
     def file_read(self):
         self.results.delete('1.0', END)
@@ -131,6 +161,7 @@ class Main(tk.Tk):
 
         self.results.insert(END, text)
         self.article_textarea.insert(END, file_text)
+        self.set_words_colors(most_common_words, collocations)
 
     def set_words_colors(self, common_word, collocation):
         self.article_textarea.tag_configure("common", background="#ff0000")

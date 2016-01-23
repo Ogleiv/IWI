@@ -41,8 +41,12 @@ def find_collocations(text, data, popular_word):
 
 
 def get_article_from_wikipedia(title):
-    wiki = wikipedia.page(title)
-    return wiki.content
+    try:
+        wiki = wikipedia.page(title)
+    except Exception as e:
+        return False, e
+
+    return True, wiki
 
 
 def single_article(title):

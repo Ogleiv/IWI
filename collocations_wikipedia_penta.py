@@ -3,7 +3,6 @@ from stemming.porter2 import stem
 import wikipedia
 
 
-
 def find_most_common_words(text, count):
     words = dict()
     for word in text.split():

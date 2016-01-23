@@ -6,7 +6,7 @@ def find_collocations_penta(file_name, data, popular_word):
     text_file = open(file_name, 'r')
     file_content = text_file.read()
 
-    most_common_words = find_most_common_words(text_file, popular_word)
+    most_common_words = find_most_common_words(file_content, popular_word)
 
     second_word = None
     third_word = None
@@ -38,15 +38,14 @@ def find_collocations_penta(file_name, data, popular_word):
     return collocations, most_common_words, file_content
 
 
-def find_most_common_words(text_file, count):
+def find_most_common_words(text, count):
     words = dict()
-    for line in text_file:
-        for word in line.split():
-            word = trim_word(word)
-            if word not in words.keys():
-                words[word] = 1
-            else:
-                words[word] += 1
+    for word in text.split():
+        word = trim_word(word)
+        if word not in words.keys():
+            words[word] = 1
+        else:
+            words[word] += 1
     sorted_words = sorted(words, key=words.get, reverse=True)
     return sorted_words[:count]
 
