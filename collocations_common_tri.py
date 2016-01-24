@@ -41,11 +41,11 @@ def trim_word(word):
 
     flag = False
 
-    if word[-1:] in ['.', ',', '\'', '\"', '-']:
+    if word[-1:] in ['.', ',', '\'', '\"', '-', ';']:
         word = word[:-1]
         flag = True
 
-    if word and word[0] in ['.', ',', '\'', '\"', '-']:
+    if word and word[0] in ['.', ',', '\'', '\"', '-', ';']:
         word = word[1:]
         flag = True
 
